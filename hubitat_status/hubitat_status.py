@@ -14,6 +14,13 @@ class HubitatStatus(BasePlugin):
     - Latest notifications from mobile devices (notificationText), deduped
     """
 
+    def _as_bool(self, value, default=False):
+        if value is None:
+            return default
+        if isinstance(value, bool):
+            return value
+        return str(value).strip().lower() in ("true", "1", "yes", "on")
+
     def _get_common_config(self, device_config):
         source_url = device_config.load_env_key("HUBITAT_DEVICES_URL")
 
@@ -192,7 +199,7 @@ class HubitatStatus(BasePlugin):
                 continue
 
             if len(text_str) > max_len:
-                text_str = text_str[: max_len - 1] + "..."
+                text_str = text_str[: max_len - 3] + "..."
 
             if text_str in seen_texts:
                 continue
@@ -205,8 +212,31 @@ class HubitatStatus(BasePlugin):
 
         return notifications
 
+    def _normalize_settings(self, settings):
+        normalized = dict(settings or {})
+
+        title = str(normalized.get("title", "Hubitat Status")).strip()
+        normalized["title"] = title or "Hubitat Status"
+
+        normalized["show_hsm"] = self._as_bool(normalized.get("show_hsm"), True)
+        normalized["show_mode"] = self._as_bool(normalized.get("show_mode"), True)
+        normalized["show_devices"] = self._as_bool(normalized.get("show_devices"), True)
+        normalized["show_presence"] = self._as_bool(normalized.get("show_presence"), True)
+        normalized["show_notifications"] = self._as_bool(
+            normalized.get("show_notifications"), True
+        )
+        normalized["compact_layout"] = self._as_bool(
+            normalized.get("compact_layout"), False
+        )
+        normalized["show_raw_hsm"] = self._as_bool(
+            normalized.get("show_raw_hsm"), False
+        )
+
+        return normalized
+
     def generate_image(self, settings, device_config):
-        title = settings.get("title", "Hubitat Status").strip() or "Hubitat Status"
+        normalized_settings = self._normalize_settings(settings)
+        title = normalized_settings["title"]
 
         modes_url, hsm_url, devices_url, verify_ssl = self._get_common_config(
             device_config
@@ -241,7 +271,7 @@ class HubitatStatus(BasePlugin):
                 "modes_raw": modes_data,
                 "hsm_raw": hsm_data,
                 "devices_raw": devices_data,
-                "plugin_settings": settings,
+                "plugin_settings": normalized_settings,
             },
         )
 
