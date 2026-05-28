@@ -2,12 +2,6 @@
 
 An InkyPi plugin that shows a Hubitat status with a clean, glanceable layout and configurable dashboard cards.
 
-## Repository
-
-GitHub repository:
-
-[https://github.com/shadal18/inkypi-hubitat-status](https://github.com/shadal18/inkypi-hubitat-status)
-
 ## Install
 
 Use the InkyPi plugin installer with the plugin ID and this repository URL, following the install pattern shown by the official InkyPi plugin template.
@@ -110,6 +104,12 @@ This plugin currently reads data from the following Hubitat Maker API endpoints:
 - `/apps/api/94/devices/all`
 
 These are used to build the dashboard cards for mode, HSM, device summaries, mobile presence, and notification text.
+
+## Repository
+
+GitHub repository:
+
+[https://github.com/shadal18/inkypi-hubitat-status](https://github.com/shadal18/inkypi-hubitat-status)
 
 ## Screenshots
 
