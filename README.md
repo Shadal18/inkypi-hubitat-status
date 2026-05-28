@@ -1,6 +1,6 @@
 # InkyPi Hubitat Status
 
-A custom InkyPi plugin that shows a Hubitat status dashboard on an e-paper display with a clean, glanceable layout and configurable dashboard cards.
+An InkyPi plugin that shows a Hubitat status with a clean, glanceable layout and configurable dashboard cards.
 
 ## Install
 
@@ -37,7 +37,6 @@ If you don’t see your changes after updating:
 
 ## Requirements
 
-- A working InkyPi installation with plugin support.
 - A reachable Hubitat hub with Maker API enabled.
 - A valid Hubitat Maker API access token.
 - Network access from the InkyPi device to the Hubitat hub.
@@ -69,19 +68,32 @@ The plugin settings page lets you customize:
 - Enable or disable compact layout.
 - Show or hide raw HSM JSON.
 
-## Environment Variables
+## API Key Setup
 
-The plugin uses the following environment values:
+This plugin requires a Hubitat Maker API access token.
 
-- `HUBITAT_API_BASE`
-- `HUBITAT_ACCESS_TOKEN`
+### Create a Hubitat Maker API token
 
-Example:
+1. Open your Hubitat web interface.
+2. Go to **Apps**.
+3. Click **Add App** or **Add Built-In App**.
+4. Choose **Maker API**.
+5. Select the devices you want this plugin to access.
+6. Click **Update**.
+7. After saving, copy the local API information shown by Maker API.
+8. Note your Hubitat hub IP address.
+9. Copy the generated `access_token` from the Maker API URLs.
 
-```env
-HUBITAT_API_BASE=http://192.168.20.9
-HUBITAT_ACCESS_TOKEN=your-maker-api-token-here
-```
+### Add the key in InkyPi
+
+1. Open the InkyPi front page.
+2. Click the **key icon**.
+3. Add a new key named `HUBITAT_API_BASE`.
+4. Set its value to your Hubitat local address, for example `http://192.168.20.9`.
+5. Add another key named `HUBITAT_ACCESS_TOKEN`.
+6. Paste in your Hubitat Maker API access token.
+7. Save the keys.
+8. Restart InkyPi if needed.
 
 ## API Endpoints Used
 
