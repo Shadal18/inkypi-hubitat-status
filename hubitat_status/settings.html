@@ -1,0 +1,119 @@
+<form>
+  <input type="hidden" name="plugin_id" value="hubitat_status" />
+
+  <div class="form-group">
+    <label for="title">Title</label>
+    <input type="text" id="title" name="title" class="form-control" placeholder="Hubitat Status" />
+    <small class="form-text text-muted"> Text shown at the top of the display. </small>
+  </div>
+
+  <div class="form-group">
+    <label class="form-label">Cards to display</label>
+
+    <div class="form-group">
+      <input type="hidden" id="show_hsm" name="show_hsm" value="true" />
+      <input type="checkbox" id="show_hsm_toggle" />
+      <span>Show HSM status</span>
+    </div>
+
+    <div class="form-group">
+      <input type="hidden" id="show_mode" name="show_mode" value="true" />
+      <input type="checkbox" id="show_mode_toggle" />
+      <span>Show mode</span>
+    </div>
+
+    <div class="form-group">
+      <input type="hidden" id="show_devices" name="show_devices" value="true" />
+      <input type="checkbox" id="show_devices_toggle" />
+      <span>Show devices summary</span>
+    </div>
+
+    <div class="form-group">
+      <input type="hidden" id="show_presence" name="show_presence" value="true" />
+      <input type="checkbox" id="show_presence_toggle" />
+      <span>Show presence</span>
+    </div>
+
+    <div class="form-group">
+      <input type="hidden" id="show_notifications" name="show_notifications" value="true" />
+      <input type="checkbox" id="show_notifications_toggle" />
+      <span>Show notifications</span>
+    </div>
+
+    <div class="form-group">
+      <input type="hidden" id="compact_layout" name="compact_layout" value="false" />
+      <input type="checkbox" id="compact_layout_toggle" />
+      <span>Enable compact layout</span>
+    </div>
+
+    <div class="form-group">
+      <input type="hidden" id="show_raw_hsm" name="show_raw_hsm" value="false" />
+      <input type="checkbox" id="show_raw_hsm_toggle" />
+      <span>Show raw HSM JSON</span>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="form-label">Hubitat setup</label>
+    <small class="form-text text-muted">
+      Add one InkyPi key named <code>HUBITAT_DEVICES_URL</code> and paste the full local Hubitat Maker API “Get All
+      Devices” URL. The plugin uses that one URL to derive the mode, HSM, and devices endpoints.
+    </small>
+  </div>
+</form>
+
+<script src="https://storage.ko-fi.com/cdn/scripts/overlay-widget.js"></script>
+<script>
+  function initBooleanToggle(settingName, defaultValue = true) {
+    const hiddenInput = document.getElementById(settingName)
+    const toggle = document.getElementById(settingName + "_toggle")
+
+    if (!hiddenInput || !toggle) return
+
+    let currentValue = defaultValue
+
+    if (
+      typeof loadPluginSettings !== "undefined" &&
+      loadPluginSettings &&
+      typeof pluginSettings !== "undefined" &&
+      pluginSettings[settingName] !== undefined
+    ) {
+      const raw = pluginSettings[settingName]
+      currentValue = raw === true || raw === "true"
+    }
+
+    hiddenInput.value = currentValue ? "true" : "false"
+    toggle.checked = currentValue
+
+    toggle.addEventListener("change", () => {
+      hiddenInput.value = toggle.checked ? "true" : "false"
+    })
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const title = document.getElementById("title")
+
+    if (typeof loadPluginSettings !== "undefined" && loadPluginSettings && typeof pluginSettings !== "undefined") {
+      if (title) title.value = pluginSettings.title || "Hubitat Status"
+    } else {
+      if (title) title.value = "Hubitat Status"
+    }
+
+    initBooleanToggle("show_hsm", true)
+    initBooleanToggle("show_mode", true)
+    initBooleanToggle("show_devices", true)
+    initBooleanToggle("show_presence", true)
+    initBooleanToggle("show_notifications", true)
+    initBooleanToggle("compact_layout", false)
+    initBooleanToggle("show_raw_hsm", false)
+
+    if (typeof kofiWidgetOverlay !== "undefined") {
+      kofiWidgetOverlay.draw("shadal", {
+        type: "floating-chat",
+        "floating-chat.donateButton.text": "Mmm Coffee",
+        "floating-chat.donateButton.background-color": "#00b9fe",
+        "floating-chat.donateButton.text-color": "#fff",
+      })
+    }
+  })
+</script>
