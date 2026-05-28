@@ -158,11 +158,16 @@
     const hiddenInput = document.getElementById(settingName)
     const toggle = document.getElementById(settingName + "_toggle")
 
+    if (!hiddenInput || !toggle) {
+      return
+    }
+
     let currentValue = defaultValue
     if (
       typeof loadPluginSettings !== "undefined" &&
       loadPluginSettings &&
       typeof pluginSettings !== "undefined" &&
+      pluginSettings &&
       pluginSettings[settingName] !== undefined
     ) {
       currentValue = pluginSettings[settingName]
@@ -172,15 +177,20 @@
     hiddenInput.value = isShown ? "show" : "hide"
     toggle.checked = isShown
 
-    toggle.addEventListener("change", () => {
+    toggle.addEventListener("change", function () {
       hiddenInput.value = toggle.checked ? "show" : "hide"
     })
   }
 
-  document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("DOMContentLoaded", function () {
     const title = document.getElementById("title")
 
-    if (typeof loadPluginSettings !== "undefined" && loadPluginSettings && typeof pluginSettings !== "undefined") {
+    if (
+      typeof loadPluginSettings !== "undefined" &&
+      loadPluginSettings &&
+      typeof pluginSettings !== "undefined" &&
+      pluginSettings
+    ) {
       if (title) title.value = pluginSettings.title || "Hubitat Status"
     } else {
       if (title) title.value = "Hubitat Status"

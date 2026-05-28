@@ -192,7 +192,7 @@ class HubitatStatus(BasePlugin):
                 continue
 
             if len(text_str) > max_len:
-                text_str = text_str[: max_len - 1] + "…"
+                text_str = text_str[: max_len - 1] + "..."
 
             if text_str in seen_texts:
                 continue
