@@ -1,0 +1,6 @@
+{
+  "display_name": "Hubitat Status",
+  "id": "hubitat_status",
+  "class": "HubitatStatus",
+  "repository": "https://github.com/shadal18/InkyPi-Hubitat-Status"
+}

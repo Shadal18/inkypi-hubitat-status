@@ -1,0 +1,96 @@
+{% extends "plugin.html" %} {% block content %}
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Hubitat Status</title>
+  </head>
+  <body class="{% if plugin_settings.compact_layout == 'true' %}compact{% endif %}">
+    <div class="root">
+      <div class="header-row">
+        <div class="title-block">
+          <div class="title">{{ title }}</div>
+          <div class="subtitle">Live snapshot from Hubitat</div>
+        </div>
+
+        {% if plugin_settings.show_mode == "true" %}
+        <div
+          class="mode-card {% set mn = mode_name|lower %} {% if 'away' in mn %} mode-away {% elif 'night' in mn %} mode-night {% elif 'day' in mn or 'home' in mn %} mode-day {% else %} mode-other {% endif %}"
+        >
+          <div class="mode-label">MODE</div>
+          <div class="mode-value">{{ mode_name }}</div>
+        </div>
+        {% endif %}
+      </div>
+
+      <div class="main-row">
+        {% if plugin_settings.show_hsm == "true" %}
+        <div class="hsm-card">
+          <div class="hsm-label">HSM STATUS</div>
+          <div
+            class="hsm-value {% set hs = hsm_status|lower %} {% if 'armed' in hs %} hsm-armed {% elif 'arming' in hs %} hsm-arming {% elif 'disarmed' in hs %} hsm-disarmed {% elif 'intrusion' in hs or 'alarm' in hs or 'alert' in hs %} hsm-alarm {% else %} hsm-unknown {% endif %}"
+          >
+            {{ hsm_status }}
+          </div>
+        </div>
+        {% endif %} {% if plugin_settings.show_devices == "true" %}
+        <div class="devices-card">
+          <div class="devices-header">
+            <div class="devices-label">DEVICES</div>
+            <div class="devices-total">{{ total_devices }}</div>
+          </div>
+          <div class="devices-types">
+            {% for item in device_type_items %}
+            <div class="device-type-row">
+              <div class="device-type-name">{{ item.type }}</div>
+              <div class="device-type-count">{{ item.count }}</div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+      </div>
+
+      {% if plugin_settings.show_presence == "true" and presence_items %}
+      <div class="presence-card">
+        <div class="presence-header">
+          <div class="presence-label">PRESENCE</div>
+        </div>
+        <div class="presence-list">
+          {% for p in presence_items %}
+          <div class="presence-row">
+            <div class="presence-name">{{ p.name }}</div>
+            <div
+              class="presence-status {% if p.status == 'present' %} presence-present {% elif p.status == 'not present' %} presence-away {% else %} presence-unknown {% endif %}"
+            >
+              {{ p.status }}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %} {% if plugin_settings.show_notifications == "true" and notifications %}
+      <div class="notifications-card">
+        <div class="notifications-header">
+          <div class="notifications-label">NOTIFICATIONS</div>
+        </div>
+        <div class="notifications-list">
+          {% for n in notifications %}
+          <div class="notification-row">
+            <div class="notification-text">{{ n.text }}</div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %} {% if plugin_settings.show_raw_hsm == "true" %}
+      <div class="raw-card">
+        <div class="section-title">Raw HSM JSON</div>
+        <pre class="raw-json">
+{{ hsm_raw | tojson(indent=2) }}
+        </pre>
+      </div>
+      {% endif %}
+    </div>
+  </body>
+</html>
+{% endblock %}

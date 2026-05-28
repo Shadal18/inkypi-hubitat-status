@@ -1,0 +1,357 @@
+/* Root layout */
+.root {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+/* Compact body tweak */
+body.compact .root {
+  padding: 12px;
+}
+
+/* Header row */
+.header-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 12px;
+}
+
+.title-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #555555;
+  margin-top: 4px;
+}
+
+/* Mode card */
+.mode-card {
+  min-width: 120px;
+  border: 2px solid #000000;
+  border-radius: 6px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  background-color: #ffffff;
+}
+
+.mode-label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 4px;
+}
+
+.mode-value {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* Mode-specific backgrounds */
+.mode-away {
+  background-color: #ff0000; /* red for Away */
+  color: #ffffff;
+}
+
+.mode-night {
+  background-color: #0000ff; /* blue for Night */
+  color: #ffffff;
+}
+
+.mode-day {
+  background-color: #008000; /* green for Day/Home */
+  color: #ffffff;
+}
+
+.mode-other {
+  background-color: #dddddd;
+  color: #000000;
+}
+
+/* Main row: HSM + Devices side-by-side */
+.main-row {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+}
+
+/* HSM card */
+.hsm-card {
+  flex: 1;
+  border: 2px solid #000000;
+  border-radius: 6px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #ffffff;
+}
+
+.hsm-label {
+  font-size: 14px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.hsm-value {
+  font-size: 24px;
+  font-weight: 800;
+}
+
+/* HSM state variants */
+.hsm-armed {
+  background-color: #008000; /* green */
+  color: #ffffff;
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+
+.hsm-arming {
+  background-color: #ffa500; /* orange */
+  color: #000000;
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+
+.hsm-disarmed {
+  background-color: #dddddd;
+  color: #000000;
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+
+.hsm-alarm {
+  background-color: #ff0000; /* red */
+  color: #ffffff;
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+
+.hsm-unknown {
+  background-color: #ffffff;
+  color: #555555;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-style: italic;
+}
+
+/* Devices card */
+.devices-card {
+  flex: 1;
+  border: 2px solid #000000;
+  border-radius: 6px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+}
+
+.devices-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 8px;
+}
+
+.devices-label {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.devices-total {
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.devices-types {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.device-type-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: 13px;
+}
+
+.device-type-name {
+  max-width: 70%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.device-type-count {
+  font-weight: 700;
+}
+
+/* Presence card */
+.presence-card {
+  margin-top: 12px;
+  border: 2px solid #000000;
+  border-radius: 6px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+}
+
+.presence-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 8px;
+}
+
+.presence-label {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.presence-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.presence-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: 13px;
+}
+
+.presence-name {
+  max-width: 70%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.presence-status {
+  font-weight: 700;
+}
+
+/* Present = solid green pill, away = yellow, unknown = gray */
+.presence-present {
+  background-color: #008000; /* green */
+  color: #ffffff;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.presence-away {
+  background-color: #ffff00; /* yellow */
+  color: #000000;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.presence-unknown {
+  background-color: #dddddd;
+  color: #555555;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-style: italic;
+}
+
+/* Notifications card */
+.notifications-card {
+  margin-top: 12px;
+  border: 2px solid #000000;
+  border-radius: 6px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+}
+
+.notifications-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 8px;
+}
+
+.notifications-label {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.notifications-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.notification-row {
+  font-size: 13px;
+  border-top: 1px solid #cccccc;
+  padding-top: 4px;
+}
+
+.notification-row:first-child {
+  border-top: none;
+  padding-top: 0;
+}
+
+.notification-text {
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+/* Raw JSON block */
+.raw-card {
+  margin-top: 12px;
+  border: 1px solid #000000;
+  border-radius: 4px;
+  padding: 8px;
+  background-color: #ffffff;
+}
+
+.section-title {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+}
+
+.raw-json {
+  font-family: "SF Mono", "Menlo", "Consolas", monospace;
+  font-size: 10px;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  word-break: break-all;
+  margin: 0;
+}
