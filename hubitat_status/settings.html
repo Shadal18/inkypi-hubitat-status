@@ -2,91 +2,178 @@
   <input type="hidden" name="plugin_id" value="hubitat_status" />
 
   <div class="form-group">
-    <label for="title">Title</label>
-    <input type="text" id="title" name="title" class="form-control" placeholder="Hubitat Status" />
-    <small class="form-text text-muted"> Text shown at the top of the display. </small>
+    <label for="title" class="form-label">Header Text</label>
+    <input type="text" id="title" name="title" placeholder="Hubitat Status" class="form-input" />
   </div>
 
   <div class="form-group">
-    <label class="form-label">Cards to display</label>
-
-    <div class="form-group">
-      <input type="hidden" id="show_hsm" name="show_hsm" value="true" />
-      <input type="checkbox" id="show_hsm_toggle" />
-      <span>Show HSM status</span>
-    </div>
-
-    <div class="form-group">
-      <input type="hidden" id="show_mode" name="show_mode" value="true" />
-      <input type="checkbox" id="show_mode_toggle" />
-      <span>Show mode</span>
-    </div>
-
-    <div class="form-group">
-      <input type="hidden" id="show_devices" name="show_devices" value="true" />
-      <input type="checkbox" id="show_devices_toggle" />
-      <span>Show devices summary</span>
-    </div>
-
-    <div class="form-group">
-      <input type="hidden" id="show_presence" name="show_presence" value="true" />
-      <input type="checkbox" id="show_presence_toggle" />
-      <span>Show presence</span>
-    </div>
-
-    <div class="form-group">
-      <input type="hidden" id="show_notifications" name="show_notifications" value="true" />
-      <input type="checkbox" id="show_notifications_toggle" />
-      <span>Show notifications</span>
-    </div>
-
-    <div class="form-group">
-      <input type="hidden" id="compact_layout" name="compact_layout" value="false" />
-      <input type="checkbox" id="compact_layout_toggle" />
-      <span>Enable compact layout</span>
-    </div>
-
-    <div class="form-group">
-      <input type="hidden" id="show_raw_hsm" name="show_raw_hsm" value="false" />
-      <input type="checkbox" id="show_raw_hsm_toggle" />
-      <span>Show raw HSM JSON</span>
+    <label class="form-label">Hubitat Maker API URL</label>
+    <div style="background: #f8f9fa; border: 1px solid #dcdfe3; border-radius: 10px; padding: 14px 16px">
+      <div style="font-size: 0.95rem; color: #333; margin-bottom: 8px">
+        Add one InkyPi key named <code>HUBITAT_DEVICES_URL</code>.
+      </div>
+      <div style="font-size: 0.9rem; color: #666; line-height: 1.5">
+        Paste the full local Hubitat Maker API <strong>Get All Devices</strong>
+        URL into the InkyPi key settings.
+      </div>
+      <div style="font-size: 0.9rem; color: #666; margin-top: 8px">
+        Example:
+        <code>http://192.168.20.9/apps/api/94/devices/all?access_token=your-token</code>
+      </div>
     </div>
   </div>
 
   <div class="form-group">
-    <label class="form-label">Hubitat setup</label>
-    <small class="form-text text-muted">
-      Add one InkyPi key named <code>HUBITAT_DEVICES_URL</code> and paste the full local Hubitat Maker API “Get All
-      Devices” URL. The plugin uses that one URL to derive the mode, HSM, and devices endpoints.
-    </small>
+    <label class="form-label">Display Options:</label>
+
+    <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 8px">
+      <div
+        class="form-group"
+        style="display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 0"
+      >
+        <label for="show_hsm_toggle" class="form-label" style="margin: 0">HSM Status</label>
+        <div class="toggle-container">
+          <input type="checkbox" id="show_hsm_toggle" class="toggle-checkbox" />
+          <label for="show_hsm_toggle" class="toggle-label"></label>
+        </div>
+        <input type="hidden" id="show_hsm" name="show_hsm" value="show" />
+      </div>
+
+      <div
+        class="form-group"
+        style="display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 0"
+      >
+        <label for="show_mode_toggle" class="form-label" style="margin: 0">Mode</label>
+        <div class="toggle-container">
+          <input type="checkbox" id="show_mode_toggle" class="toggle-checkbox" />
+          <label for="show_mode_toggle" class="toggle-label"></label>
+        </div>
+        <input type="hidden" id="show_mode" name="show_mode" value="show" />
+      </div>
+
+      <div
+        class="form-group"
+        style="display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 0"
+      >
+        <label for="show_devices_toggle" class="form-label" style="margin: 0">Devices Summary</label>
+        <div class="toggle-container">
+          <input type="checkbox" id="show_devices_toggle" class="toggle-checkbox" />
+          <label for="show_devices_toggle" class="toggle-label"></label>
+        </div>
+        <input type="hidden" id="show_devices" name="show_devices" value="show" />
+      </div>
+
+      <div
+        class="form-group"
+        style="display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 0"
+      >
+        <label for="show_presence_toggle" class="form-label" style="margin: 0">Presence</label>
+        <div class="toggle-container">
+          <input type="checkbox" id="show_presence_toggle" class="toggle-checkbox" />
+          <label for="show_presence_toggle" class="toggle-label"></label>
+        </div>
+        <input type="hidden" id="show_presence" name="show_presence" value="show" />
+      </div>
+
+      <div
+        class="form-group"
+        style="display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 0"
+      >
+        <label for="show_notifications_toggle" class="form-label" style="margin: 0">Notifications</label>
+        <div class="toggle-container">
+          <input type="checkbox" id="show_notifications_toggle" class="toggle-checkbox" />
+          <label for="show_notifications_toggle" class="toggle-label"></label>
+        </div>
+        <input type="hidden" id="show_notifications" name="show_notifications" value="show" />
+      </div>
+
+      <div
+        class="form-group"
+        style="display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 0"
+      >
+        <label for="compact_layout_toggle" class="form-label" style="margin: 0">Compact Layout</label>
+        <div class="toggle-container">
+          <input type="checkbox" id="compact_layout_toggle" class="toggle-checkbox" />
+          <label for="compact_layout_toggle" class="toggle-label"></label>
+        </div>
+        <input type="hidden" id="compact_layout" name="compact_layout" value="hide" />
+      </div>
+
+      <div
+        class="form-group"
+        style="display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 0"
+      >
+        <label for="show_raw_hsm_toggle" class="form-label" style="margin: 0">Raw HSM JSON</label>
+        <div class="toggle-container">
+          <input type="checkbox" id="show_raw_hsm_toggle" class="toggle-checkbox" />
+          <label for="show_raw_hsm_toggle" class="toggle-label"></label>
+        </div>
+        <input type="hidden" id="show_raw_hsm" name="show_raw_hsm" value="hide" />
+      </div>
+    </div>
+  </div>
+
+  <hr style="border: 0; border-top: 1px solid rgba(0, 0, 0, 0.12); margin: 24px 0 18px" />
+
+  <div class="form-group" style="margin-bottom: 20px">
+    <div
+      style="
+        font-size: 0.95rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: #555;
+        margin-bottom: 10px;
+      "
+    >
+      Plugin Repository
+    </div>
+
+    <div style="background: #f8f9fa; border: 1px solid #dcdfe3; border-radius: 10px; padding: 14px 16px">
+      <a
+        href="https://github.com/shadal18/inkypi-hubitat-status"
+        target="_blank"
+        rel="noopener noreferrer"
+        style="
+          color: #0d6efd;
+          text-decoration: none;
+          font-weight: 600;
+          font-size: 1rem;
+          word-break: break-word;
+          display: inline-block;
+          margin-bottom: 6px;
+        "
+      >
+        github.com/shadal18/inkypi-hubitat-status
+      </a>
+
+      <div style="font-size: 0.9rem; color: #666">Setup help, updates, release notes, and source code.</div>
+    </div>
   </div>
 </form>
 
 <script src="https://storage.ko-fi.com/cdn/scripts/overlay-widget.js"></script>
 <script>
-  function initBooleanToggle(settingName, defaultValue = true) {
+  function initToggle(settingName, defaultValue = "show") {
     const hiddenInput = document.getElementById(settingName)
     const toggle = document.getElementById(settingName + "_toggle")
 
-    if (!hiddenInput || !toggle) return
-
     let currentValue = defaultValue
-
     if (
       typeof loadPluginSettings !== "undefined" &&
       loadPluginSettings &&
       typeof pluginSettings !== "undefined" &&
       pluginSettings[settingName] !== undefined
     ) {
-      const raw = pluginSettings[settingName]
-      currentValue = raw === true || raw === "true"
+      currentValue = pluginSettings[settingName]
     }
 
-    hiddenInput.value = currentValue ? "true" : "false"
-    toggle.checked = currentValue
+    const isShown = currentValue === "show"
+    hiddenInput.value = isShown ? "show" : "hide"
+    toggle.checked = isShown
 
     toggle.addEventListener("change", () => {
-      hiddenInput.value = toggle.checked ? "true" : "false"
+      hiddenInput.value = toggle.checked ? "show" : "hide"
     })
   }
 
@@ -99,18 +186,18 @@
       if (title) title.value = "Hubitat Status"
     }
 
-    initBooleanToggle("show_hsm", true)
-    initBooleanToggle("show_mode", true)
-    initBooleanToggle("show_devices", true)
-    initBooleanToggle("show_presence", true)
-    initBooleanToggle("show_notifications", true)
-    initBooleanToggle("compact_layout", false)
-    initBooleanToggle("show_raw_hsm", false)
+    initToggle("show_hsm", "show")
+    initToggle("show_mode", "show")
+    initToggle("show_devices", "show")
+    initToggle("show_presence", "show")
+    initToggle("show_notifications", "show")
+    initToggle("compact_layout", "hide")
+    initToggle("show_raw_hsm", "hide")
 
     if (typeof kofiWidgetOverlay !== "undefined") {
       kofiWidgetOverlay.draw("shadal", {
         type: "floating-chat",
-        "floating-chat.donateButton.text": "Mmm Coffee",
+        "floating-chat.donateButton.text": "More coffee",
         "floating-chat.donateButton.background-color": "#00b9fe",
         "floating-chat.donateButton.text-color": "#fff",
       })
