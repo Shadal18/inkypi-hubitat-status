@@ -70,9 +70,9 @@ The plugin settings page lets you customize:
 
 ## API Key Setup
 
-This plugin requires a Hubitat Maker API access token.
+This plugin requires one Hubitat Maker API URL.
 
-### Create a Hubitat Maker API token
+### Create the Hubitat Maker API URL
 
 1. Open your Hubitat web interface.
 2. Go to **Apps**.
@@ -80,20 +80,16 @@ This plugin requires a Hubitat Maker API access token.
 4. Choose **Maker API**.
 5. Select the devices you want this plugin to access.
 6. Click **Update**.
-7. After saving, copy the local API information shown by Maker API.
-8. Note your Hubitat hub IP address.
-9. Copy the generated `access_token` from the Maker API URLs.
+7. In the Maker API page, copy the full local URL shown for **Get All Devices**.
 
 ### Add the key in InkyPi
 
 1. Open the InkyPi front page.
 2. Click the **key icon**.
-3. Add a new key named `HUBITAT_API_BASE`.
-4. Set its value to your Hubitat local address, for example `http://192.168.20.9`.
-5. Add another key named `HUBITAT_ACCESS_TOKEN`.
-6. Paste in your Hubitat Maker API access token.
-7. Save the keys.
-8. Restart InkyPi if needed.
+3. Add a new key named `HUBITAT_DEVICES_URL`.
+4. Paste in the full local **Get All Devices** URL from Hubitat.
+5. Save it.
+6. Restart InkyPi if needed.
 
 ## API Endpoints Used
 

@@ -15,28 +15,27 @@ class HubitatStatus(BasePlugin):
     """
 
     def _get_common_config(self, device_config):
-        api_base = (
-            device_config.load_env_key("HUBITAT_API_BASE")
-            or "http://192.168.20.9"
-        )
-        access_token = device_config.load_env_key("HUBITAT_ACCESS_TOKEN")
+        devices_url = device_config.load_env_key("HUBITAT_DEVICES_URL")
 
-        if not access_token:
+        if not devices_url:
             raise RuntimeError(
-                "Hubitat access token not configured. "
-                "Set HUBITAT_ACCESS_TOKEN in the InkyPi .env."
+                "Hubitat devices URL not configured. "
+                "Set HUBITAT_DEVICES_URL in the InkyPi .env."
             )
 
         verify_ssl = False
 
-        modes_path = "/apps/api/94/modes"
-        hsm_path = "/apps/api/94/hsm"
-        devices_path = "/apps/api/94/devices/all"
+        marker = "/devices/all?access_token="
+        if marker not in devices_url:
+            raise RuntimeError(
+                "HUBITAT_DEVICES_URL must look like "
+                "http://HUB_IP/apps/api/APP_ID/devices/all?access_token=TOKEN"
+            )
 
-        base = api_base.rstrip("/")
-        modes_url = f"{base}{modes_path}?access_token={access_token}"
-        hsm_url = f"{base}{hsm_path}?access_token={access_token}"
-        devices_url = f"{base}{devices_path}?access_token={access_token}"
+        base, token = devices_url.split(marker, 1)
+        modes_url = f"{base}/modes?access_token={token}"
+        hsm_url = f"{base}/hsm?access_token={token}"
+        devices_url = f"{base}/devices/all?access_token={token}"
 
         return modes_url, hsm_url, devices_url, verify_ssl
 
