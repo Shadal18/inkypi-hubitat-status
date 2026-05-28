@@ -14,7 +14,7 @@ class HubitatStatus(BasePlugin):
     - Latest notifications from mobile devices (notificationText), deduped
     """
 
-        def _get_common_config(self, device_config):
+    def _get_common_config(self, device_config):
         source_url = device_config.load_env_key("HUBITAT_DEVICES_URL")
 
         if not source_url:
@@ -51,7 +51,6 @@ class HubitatStatus(BasePlugin):
                 "HUBITAT_DEVICES_URL does not look like a valid Maker API URL"
             )
 
-        # Expect .../apps/api/{app_id}/something
         app_base = "/".join(parts[:-1])
 
         modes_url = f"{app_base}/modes?access_token={token}"
@@ -85,9 +84,6 @@ class HubitatStatus(BasePlugin):
             ) from e
 
     def _extract_mode_name(self, data):
-        """
-        /modes: list of {active, id, name, ...}
-        """
         if isinstance(data, list):
             for item in data:
                 if isinstance(item, dict) and item.get("active"):
@@ -95,9 +91,6 @@ class HubitatStatus(BasePlugin):
         return "Unknown"
 
     def _extract_hsm_status(self, data):
-        """
-        /hsm: usually {"hsm":"armingNight"} or {"hsmStatus": "..."}
-        """
         if isinstance(data, dict):
             if "hsm" in data:
                 return str(data.get("hsm"))
@@ -106,10 +99,6 @@ class HubitatStatus(BasePlugin):
         return "Unknown"
 
     def _get_devices_summary(self, data):
-        """
-        /devices/all: list of device dicts with at least 'type' and labels.
-        Returns total count and top few type buckets.
-        """
         if not isinstance(data, list):
             return 0, []
 
@@ -129,13 +118,6 @@ class HubitatStatus(BasePlugin):
         return total, top_types
 
     def _get_presence_summary(self, devices):
-        """
-        Derive presence from /devices/all.
-
-        We treat any device with type "Mobile App Device" as a
-        presence device, and read its 'presence' field from the
-        attributes dict when present.
-        """
         if not isinstance(devices, list):
             return []
 
@@ -175,13 +157,6 @@ class HubitatStatus(BasePlugin):
         return presence_items
 
     def _get_notifications(self, devices, max_items=3, max_len=140):
-        """
-        Extract latest notification text from Mobile App Devices.
-
-        Uses the 'notificationText' field in the attributes dict
-        when present, removes duplicate messages, and returns only
-        the text for display.
-        """
         if not isinstance(devices, list):
             return []
 
@@ -253,8 +228,8 @@ class HubitatStatus(BasePlugin):
 
         return self.render_image(
             dimensions=(width, height),
-            html_file="hubitat_status.html",
-            css_file="hubitat_status.css",
+            html_file="hubitatstatus.html",
+            css_file="hubitatstatus.css",
             template_params={
                 "title": title,
                 "mode_name": mode_name,
