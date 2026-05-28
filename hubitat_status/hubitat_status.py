@@ -228,8 +228,8 @@ class HubitatStatus(BasePlugin):
 
         return self.render_image(
             dimensions=(width, height),
-            html_file="hubitatstatus.html",
-            css_file="hubitatstatus.css",
+            html_file="hubitat_status.html",
+            css_file="hubitat_status.css",
             template_params={
                 "title": title,
                 "mode_name": mode_name,
