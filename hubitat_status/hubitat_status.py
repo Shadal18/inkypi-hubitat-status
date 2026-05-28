@@ -14,28 +14,49 @@ class HubitatStatus(BasePlugin):
     - Latest notifications from mobile devices (notificationText), deduped
     """
 
-    def _get_common_config(self, device_config):
-        devices_url = device_config.load_env_key("HUBITAT_DEVICES_URL")
+        def _get_common_config(self, device_config):
+        source_url = device_config.load_env_key("HUBITAT_DEVICES_URL")
 
-        if not devices_url:
+        if not source_url:
             raise RuntimeError(
                 "Hubitat devices URL not configured. "
                 "Set HUBITAT_DEVICES_URL in the InkyPi .env."
             )
 
         verify_ssl = False
+        source_url = source_url.strip()
 
-        marker = "/devices/all?access_token="
-        if marker not in devices_url:
+        marker = "/apps/api/"
+        if marker not in source_url or "?access_token=" not in source_url:
             raise RuntimeError(
-                "HUBITAT_DEVICES_URL must look like "
-                "http://HUB_IP/apps/api/APP_ID/devices/all?access_token=TOKEN"
+                "HUBITAT_DEVICES_URL must contain /apps/api/ and ?access_token="
             )
 
-        base, token = devices_url.split(marker, 1)
-        modes_url = f"{base}/modes?access_token={token}"
-        hsm_url = f"{base}/hsm?access_token={token}"
-        devices_url = f"{base}/devices/all?access_token={token}"
+        try:
+            prefix, token = source_url.split("?access_token=", 1)
+        except ValueError:
+            raise RuntimeError(
+                "Could not parse access token from HUBITAT_DEVICES_URL"
+            )
+
+        token = token.strip()
+        if not token:
+            raise RuntimeError(
+                "HUBITAT_DEVICES_URL is missing an access token"
+            )
+
+        parts = prefix.rstrip("/").split("/")
+        if len(parts) < 3:
+            raise RuntimeError(
+                "HUBITAT_DEVICES_URL does not look like a valid Maker API URL"
+            )
+
+        # Expect .../apps/api/{app_id}/something
+        app_base = "/".join(parts[:-1])
+
+        modes_url = f"{app_base}/modes?access_token={token}"
+        hsm_url = f"{app_base}/hsm?access_token={token}"
+        devices_url = f"{app_base}/devices/all?access_token={token}"
 
         return modes_url, hsm_url, devices_url, verify_ssl
 
