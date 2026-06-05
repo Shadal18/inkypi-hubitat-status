@@ -2,6 +2,8 @@
 
 An InkyPi plugin that shows a Hubitat status with a clean, glanceable layout and configurable dashboard cards.
 
+_Hubitat Status_ is a plugin for [InkyPi](https://github.com/fatihak/InkyPi) that shows key metrics from your Hubitat home automation hub on your e‑paper dashboard.
+
 ## Install
 
 Use the InkyPi plugin installer with the plugin ID and this repository URL, following the install pattern shown by the official InkyPi plugin template.
