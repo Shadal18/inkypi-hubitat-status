@@ -1,155 +1,558 @@
-<form>
+<style>
+  :root {
+    --ag-bg: var(--background-color, var(--color-background, #f5f7fb));
+    --ag-bg-soft: var(--card-background-secondary, var(--color-surface-2, #eef2f7));
+    --ag-panel: var(--card-background, var(--color-surface, #ffffff));
+    --ag-panel-2: var(--card-background-hover, var(--color-surface-2, #f8fafc));
+    --ag-border: var(--border-color, rgba(15, 23, 42, 0.12));
+    --ag-border-strong: var(--border-color-strong, rgba(15, 23, 42, 0.18));
+    --ag-text: var(--text-primary, var(--color-text, #0f172a));
+    --ag-text-muted: var(--text-secondary, var(--color-text-secondary, #475569));
+    --ag-text-soft: var(--text-muted, #64748b);
+    --ag-primary: var(--accent-color, #14b8a6);
+    --ag-info: var(--info-color, #3b82f6);
+    --ag-shadow-sm: 0 8px 24px rgba(15, 23, 42, 0.08);
+    --ag-radius-xl: 18px;
+    --ag-radius-lg: 14px;
+  }
+
+  html.dark,
+  body.dark,
+  [data-theme="dark"],
+  html[data-theme="dark"] {
+    --ag-bg: var(--background-color, var(--color-background, #0f172a));
+    --ag-bg-soft: var(--card-background-secondary, var(--color-surface-2, #162033));
+    --ag-panel: var(--card-background, var(--color-surface, #111827));
+    --ag-panel-2: var(--card-background-hover, var(--color-surface-2, #172033));
+    --ag-border: var(--border-color, rgba(255, 255, 255, 0.1));
+    --ag-border-strong: var(--border-color-strong, rgba(255, 255, 255, 0.16));
+    --ag-text: var(--text-primary, var(--color-text, #f8fafc));
+    --ag-text-muted: var(--text-secondary, var(--color-text-secondary, #cbd5e1));
+    --ag-text-soft: var(--text-muted, #94a3b8);
+    --ag-shadow-sm: 0 10px 28px rgba(0, 0, 0, 0.22);
+  }
+
+  .hubitat-settings-container {
+    width: 100%;
+    box-sizing: border-box;
+    color: var(--ag-text);
+  }
+
+  .ph-shell {
+    display: grid;
+    gap: 18px;
+    margin-top: 8px;
+  }
+
+  .ph-hero {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--ag-radius-xl);
+    border: 1px solid var(--ag-border);
+    background:
+      radial-gradient(circle at top right, color-mix(in srgb, var(--ag-primary) 16%, transparent), transparent 34%),
+      radial-gradient(circle at bottom left, color-mix(in srgb, var(--ag-info) 12%, transparent), transparent 30%),
+      linear-gradient(180deg, color-mix(in srgb, var(--ag-panel) 92%, var(--ag-bg-soft) 8%), var(--ag-panel-2));
+    box-shadow: var(--ag-shadow-sm);
+    padding: 22px 22px 18px;
+  }
+
+  .ph-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--ag-primary) 14%, transparent);
+    color: var(--ag-primary);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    border: 1px solid color-mix(in srgb, var(--ag-primary) 22%, transparent);
+  }
+
+  .ph-hero h2 {
+    margin: 0;
+    color: var(--ag-text);
+    font-size: 28px;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+  }
+
+  .ph-hero p {
+    margin: 10px 0 0;
+    max-width: 68ch;
+    color: var(--ag-text-muted);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .ph-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 18px;
+  }
+
+  .ph-metric {
+    border: 1px solid var(--ag-border);
+    border-radius: var(--ag-radius-lg);
+    background: color-mix(in srgb, var(--ag-panel) 92%, var(--ag-bg) 8%);
+    padding: 14px 14px 12px;
+    min-width: 0;
+    box-shadow: inset 0 1px 0 color-mix(in srgb, #fff 22%, transparent);
+  }
+
+  .ph-metric-label {
+    color: var(--ag-text-soft);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+  }
+
+  .ph-metric-value {
+    color: var(--ag-text);
+    font-size: 28px;
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+  }
+
+  .ph-metric-sub {
+    color: var(--ag-text-muted);
+    font-size: 12px;
+    margin-top: 6px;
+  }
+
+  .ph-section,
+  .ph-link-card {
+    border: 1px solid var(--ag-border);
+    border-radius: var(--ag-radius-xl);
+    background: linear-gradient(180deg, var(--ag-panel), var(--ag-panel-2));
+    box-shadow: var(--ag-shadow-sm);
+    overflow: hidden;
+  }
+
+  .ph-section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--ag-border);
+  }
+
+  .ph-section-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+    border: 1px solid var(--ag-border);
+    background: color-mix(in srgb, var(--ag-bg-soft) 65%, var(--ag-panel) 35%);
+  }
+
+  .ph-section-copy {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .ph-section-title {
+    color: var(--ag-text);
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  .ph-section-subtitle {
+    color: var(--ag-text-muted);
+    font-size: 13px;
+    margin-top: 4px;
+  }
+
+  .ph-section-body {
+    padding: 18px 20px 20px;
+  }
+
+  .ph-grid {
+    display: grid;
+    gap: 16px;
+  }
+
+  .ph-field {
+    display: grid;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .ph-label {
+    color: var(--ag-text-soft);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .ph-input,
+  .hubitat-settings-container input[type="text"],
+  .hubitat-settings-container input[type="password"],
+  .hubitat-settings-container input[type="number"],
+  .hubitat-settings-container input[type="url"],
+  .hubitat-settings-container select {
+    width: 100%;
+    min-height: 46px;
+    padding: 0 14px;
+    border-radius: 12px;
+    border: 1px solid var(--ag-border);
+    background: var(--ag-panel);
+    color: var(--ag-text);
+    outline: none;
+    box-sizing: border-box;
+    box-shadow: inset 0 1px 0 color-mix(in srgb, #fff 14%, transparent);
+  }
+
+  .ph-input::placeholder,
+  .hubitat-settings-container input::placeholder {
+    color: var(--ag-text-soft);
+    opacity: 1;
+  }
+
+  .ph-input:focus,
+  .hubitat-settings-container input:focus,
+  .hubitat-settings-container select:focus {
+    border-color: color-mix(in srgb, var(--ag-primary) 45%, transparent);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--ag-primary) 14%, transparent);
+  }
+
+  .ph-note {
+    margin: 0;
+    color: var(--ag-text-muted);
+    font-size: 12px;
+    line-height: 1.6;
+  }
+
+  .ph-callout {
+    border: 1px solid var(--ag-border);
+    border-radius: var(--ag-radius-lg);
+    background: color-mix(in srgb, var(--ag-panel) 92%, var(--ag-bg) 8%);
+    padding: 14px 16px;
+  }
+
+  .ph-callout-copy {
+    font-size: 0.95rem;
+    color: var(--ag-text);
+    margin-bottom: 8px;
+  }
+
+  .ph-callout-help {
+    font-size: 0.9rem;
+    color: var(--ag-text-muted);
+    line-height: 1.6;
+  }
+
+  .ph-callout code {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--ag-bg-soft) 70%, var(--ag-panel) 30%);
+    border: 1px solid var(--ag-border);
+    color: var(--ag-text);
+    word-break: break-all;
+  }
+
+  .ph-toggle-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+  }
+
+  .ph-toggle-card {
+    border: 1px solid var(--ag-border);
+    border-radius: var(--ag-radius-lg);
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--ag-panel) 96%, #fff 4%),
+      color-mix(in srgb, var(--ag-panel-2) 96%, var(--ag-bg) 4%)
+    );
+    padding: 14px;
+    box-shadow: 0 1px 0 color-mix(in srgb, #fff 16%, transparent);
+    color: var(--ag-text);
+  }
+
+  .ph-toggle-card label {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    cursor: pointer;
+    margin: 0;
+  }
+
+  .ph-toggle-card input[type="checkbox"] {
+    margin-top: 2px;
+    accent-color: var(--ag-primary);
+    flex-shrink: 0;
+  }
+
+  .ph-toggle-title {
+    color: var(--ag-text);
+    font-size: 14px;
+    font-weight: 700;
+    margin: 0 0 4px;
+  }
+
+  .ph-toggle-copy {
+    color: var(--ag-text-muted);
+    font-size: 12px;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .ph-link-card {
+    padding: 16px 20px;
+  }
+
+  .ph-link-card a {
+    color: var(--ag-primary);
+    text-decoration: none;
+    font-weight: 700;
+    word-break: break-word;
+  }
+
+  .ph-link-card a:hover,
+  .ph-link-card a:focus-visible {
+    text-decoration: underline;
+    outline: none;
+  }
+
+  .ph-link-help {
+    margin-top: 8px;
+    color: var(--ag-text-muted);
+    font-size: 12px;
+    line-height: 1.6;
+  }
+
+  .floatingchat-container-wrap,
+  .floatingchat-container-wrap-mobi {
+    left: unset !important;
+    right: 16px !important;
+    bottom: 16px !important;
+  }
+
+  .floating-chat-kofi-popup-iframe {
+    left: unset !important;
+    right: 16px !important;
+    bottom: 76px !important;
+  }
+
+  @media (max-width: 920px) {
+    .ph-metrics {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .ph-hero {
+      padding: 18px;
+    }
+
+    .ph-hero h2 {
+      font-size: 22px;
+    }
+
+    .ph-section-header {
+      padding: 16px;
+    }
+
+    .ph-section-body,
+    .ph-link-card {
+      padding: 16px;
+    }
+  }
+</style>
+
+<div class="hubitat-settings-container">
   <input type="hidden" name="plugin_id" value="hubitat_status" />
 
-  <div class="form-group">
-    <label for="title" class="form-label">Header Text</label>
-    <input type="text" id="title" name="title" placeholder="Hubitat Status" class="form-input" />
-  </div>
+  <div class="ph-shell">
+    <section class="ph-hero">
+      <div class="ph-eyebrow">Hubitat</div>
+      <h2>Display your home status at a glance.</h2>
+      <p>
+        Connect the plugin to Hubitat Maker API data, customize which status blocks appear on the dashboard, and keep
+        the configuration aligned with the Pi-hole and AdGuard settings layout.
+      </p>
 
-  <div class="form-group">
-    <label class="form-label">Hubitat Maker API URL</label>
-    <div style="background: #f8f9fa; border: 1px solid #dcdfe3; border-radius: 10px; padding: 14px 16px">
-      <div style="font-size: 0.95rem; color: #333; margin-bottom: 8px">
-        Add one InkyPi key named <code>HUBITAT_DEVICES_URL</code>.
-      </div>
-      <div style="font-size: 0.9rem; color: #666; line-height: 1.5">
-        Paste the full local Hubitat Maker API <strong>Get All Devices</strong>
-        URL into the InkyPi key settings.
-      </div>
-      <div style="font-size: 0.9rem; color: #666; margin-top: 8px">
-        Example:
-        <code>http://hubitat.local/apps/api/94/devices/all?access_token=your-token</code>
-      </div>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label class="form-label">Display Options:</label>
-
-    <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 8px">
-      <div
-        class="form-group"
-        style="display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 0"
-      >
-        <label for="show_hsm" class="form-label" style="margin: 0">HSM Status</label>
-        <div class="toggle-container">
-          <input type="checkbox" id="show_hsm" name="show_hsm" value="true" class="toggle-checkbox" />
-          <label for="show_hsm" class="toggle-label"></label>
+      <div class="ph-metrics">
+        <div class="ph-metric">
+          <div class="ph-metric-label">Source</div>
+          <div class="ph-metric-value">Hubitat</div>
+          <div class="ph-metric-sub">Maker API device feed</div>
+        </div>
+        <div class="ph-metric">
+          <div class="ph-metric-label">Display</div>
+          <div class="ph-metric-value">E-Ink</div>
+          <div class="ph-metric-sub">Dashboard-ready layout</div>
+        </div>
+        <div class="ph-metric">
+          <div class="ph-metric-label">Profile</div>
+          <div class="ph-metric-value">Status</div>
+          <div class="ph-metric-sub">Home overview plugin</div>
         </div>
       </div>
+    </section>
 
-      <div
-        class="form-group"
-        style="display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 0"
-      >
-        <label for="show_mode" class="form-label" style="margin: 0">Mode</label>
-        <div class="toggle-container">
-          <input type="checkbox" id="show_mode" name="show_mode" value="true" class="toggle-checkbox" />
-          <label for="show_mode" class="toggle-label"></label>
+    <section class="ph-section">
+      <div class="ph-section-header">
+        <span class="ph-section-icon" aria-hidden="true">📝</span>
+        <div class="ph-section-copy">
+          <div class="ph-section-title">Header</div>
+          <div class="ph-section-subtitle">Set the title shown on the rendered dashboard.</div>
         </div>
       </div>
-
-      <div
-        class="form-group"
-        style="display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 0"
-      >
-        <label for="show_devices" class="form-label" style="margin: 0">Devices Summary</label>
-        <div class="toggle-container">
-          <input type="checkbox" id="show_devices" name="show_devices" value="true" class="toggle-checkbox" />
-          <label for="show_devices" class="toggle-label"></label>
+      <div class="ph-section-body">
+        <div class="ph-grid">
+          <div class="ph-field">
+            <label class="ph-label" for="title">Header text</label>
+            <input
+              type="text"
+              id="title"
+              name="title"
+              class="ph-input"
+              placeholder="Hubitat Status"
+              autocomplete="off"
+            />
+            <p class="ph-note">This text appears as the main dashboard heading.</p>
+          </div>
         </div>
       </div>
+    </section>
 
-      <div
-        class="form-group"
-        style="display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 0"
-      >
-        <label for="show_presence" class="form-label" style="margin: 0">Presence</label>
-        <div class="toggle-container">
-          <input type="checkbox" id="show_presence" name="show_presence" value="true" class="toggle-checkbox" />
-          <label for="show_presence" class="toggle-label"></label>
+    <section class="ph-section">
+      <div class="ph-section-header">
+        <span class="ph-section-icon" aria-hidden="true">🔌</span>
+        <div class="ph-section-copy">
+          <div class="ph-section-title">Connection</div>
+          <div class="ph-section-subtitle">Configure the Maker API endpoint through InkyPi keys.</div>
         </div>
       </div>
-
-      <div
-        class="form-group"
-        style="display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 0"
-      >
-        <label for="show_notifications" class="form-label" style="margin: 0">Notifications</label>
-        <div class="toggle-container">
-          <input
-            type="checkbox"
-            id="show_notifications"
-            name="show_notifications"
-            value="true"
-            class="toggle-checkbox"
-          />
-          <label for="show_notifications" class="toggle-label"></label>
+      <div class="ph-section-body">
+        <div class="ph-callout">
+          <div class="ph-callout-copy">Add one InkyPi key named <code>HUBITAT_DEVICES_URL</code>.</div>
+          <div class="ph-callout-help">
+            Paste the full local Hubitat Maker API <strong>Get All Devices</strong> URL into the InkyPi key settings.
+          </div>
+          <div class="ph-callout-help" style="margin-top: 8px">
+            Example:
+            <code>http://hubitat.local/apps/api/94/devices/all?access_token=your-token</code>
+          </div>
         </div>
       </div>
+    </section>
 
-      <div
-        class="form-group"
-        style="display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 0"
-      >
-        <label for="compact_layout" class="form-label" style="margin: 0">Compact Layout</label>
-        <div class="toggle-container">
-          <input type="checkbox" id="compact_layout" name="compact_layout" value="true" class="toggle-checkbox" />
-          <label for="compact_layout" class="toggle-label"></label>
+    <section class="ph-section">
+      <div class="ph-section-header">
+        <span class="ph-section-icon" aria-hidden="true">📊</span>
+        <div class="ph-section-copy">
+          <div class="ph-section-title">Display sections</div>
+          <div class="ph-section-subtitle">Choose what appears on the rendered display image.</div>
         </div>
       </div>
+      <div class="ph-section-body">
+        <div class="ph-toggle-grid">
+          <input type="hidden" name="show_hsm" value="false" />
+          <div class="ph-toggle-card">
+            <label>
+              <input type="checkbox" id="show_hsm" name="show_hsm" value="true" />
+              <span>
+                <div class="ph-toggle-title">HSM status</div>
+                <div class="ph-toggle-copy">Show the current Hubitat Safety Monitor state.</div>
+              </span>
+            </label>
+          </div>
 
-      <div
-        class="form-group"
-        style="display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 0"
-      >
-        <label for="show_raw_hsm" class="form-label" style="margin: 0">Raw HSM JSON</label>
-        <div class="toggle-container">
-          <input type="checkbox" id="show_raw_hsm" name="show_raw_hsm" value="true" class="toggle-checkbox" />
-          <label for="show_raw_hsm" class="toggle-label"></label>
+          <input type="hidden" name="show_mode" value="false" />
+          <div class="ph-toggle-card">
+            <label>
+              <input type="checkbox" id="show_mode" name="show_mode" value="true" />
+              <span>
+                <div class="ph-toggle-title">Mode</div>
+                <div class="ph-toggle-copy">Show the active Hubitat mode.</div>
+              </span>
+            </label>
+          </div>
+
+          <input type="hidden" name="show_devices" value="false" />
+          <div class="ph-toggle-card">
+            <label>
+              <input type="checkbox" id="show_devices" name="show_devices" value="true" />
+              <span>
+                <div class="ph-toggle-title">Devices summary</div>
+                <div class="ph-toggle-copy">Show a summary of device states and counts.</div>
+              </span>
+            </label>
+          </div>
+
+          <input type="hidden" name="show_presence" value="false" />
+          <div class="ph-toggle-card">
+            <label>
+              <input type="checkbox" id="show_presence" name="show_presence" value="true" />
+              <span>
+                <div class="ph-toggle-title">Presence</div>
+                <div class="ph-toggle-copy">Show presence information for tracked people or devices.</div>
+              </span>
+            </label>
+          </div>
+
+          <input type="hidden" name="show_notifications" value="false" />
+          <div class="ph-toggle-card">
+            <label>
+              <input type="checkbox" id="show_notifications" name="show_notifications" value="true" />
+              <span>
+                <div class="ph-toggle-title">Notifications</div>
+                <div class="ph-toggle-copy">Show active notifications on the dashboard.</div>
+              </span>
+            </label>
+          </div>
+
+          <input type="hidden" name="compact_layout" value="false" />
+          <div class="ph-toggle-card">
+            <label>
+              <input type="checkbox" id="compact_layout" name="compact_layout" value="true" />
+              <span>
+                <div class="ph-toggle-title">Compact layout</div>
+                <div class="ph-toggle-copy">Reduce spacing to fit more information on the display.</div>
+              </span>
+            </label>
+          </div>
+
+          <input type="hidden" name="show_raw_hsm" value="false" />
+          <div class="ph-toggle-card">
+            <label>
+              <input type="checkbox" id="show_raw_hsm" name="show_raw_hsm" value="true" />
+              <span>
+                <div class="ph-toggle-title">Raw HSM JSON</div>
+                <div class="ph-toggle-copy">Show the raw Hubitat Safety Monitor payload for debugging.</div>
+              </span>
+            </label>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
+    </section>
 
-  <hr style="border: 0; border-top: 1px solid rgba(0, 0, 0, 0.12); margin: 24px 0 18px" />
-
-  <div class="form-group" style="margin-bottom: 20px">
-    <div
-      style="
-        font-size: 0.95rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.04em;
-        color: #555;
-        margin-bottom: 10px;
-      "
-    >
-      Plugin Repository
-    </div>
-
-    <div style="background: #f8f9fa; border: 1px solid #dcdfe3; border-radius: 10px; padding: 14px 16px">
-      <a
-        href="https://github.com/shadal18/inkypi-hubitat-status"
-        target="_blank"
-        rel="noopener noreferrer"
-        style="
-          color: #0d6efd;
-          text-decoration: none;
-          font-weight: 600;
-          font-size: 1rem;
-          word-break: break-word;
-          display: inline-block;
-          margin-bottom: 6px;
-        "
-      >
+    <section class="ph-link-card">
+      <a href="https://github.com/shadal18/inkypi-hubitat-status" target="_blank" rel="noopener noreferrer">
         github.com/shadal18/inkypi-hubitat-status
       </a>
-
-      <div style="font-size: 0.9rem; color: #666">Setup help, updates, release notes, and source code.</div>
-    </div>
+      <div class="ph-link-help">Setup help, updates, release notes, and source code.</div>
+    </section>
   </div>
-</form>
+</div>
 
 <script src="https://storage.ko-fi.com/cdn/scripts/overlay-widget.js"></script>
 <script>
@@ -215,5 +618,3 @@
     }
   })
 </script>
-  </body>
-</html>
